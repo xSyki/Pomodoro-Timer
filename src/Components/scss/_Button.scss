@@ -1,0 +1,12 @@
+.button {
+    background-color: transparent;
+    border: transparent;
+
+    font-size: 3rem;
+
+    margin: 1.5rem 2.5rem 1.5rem 2.5rem;
+
+    &--active {
+        color: var(--succes-color);
+    }
+}
