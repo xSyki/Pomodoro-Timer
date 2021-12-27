@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, FC, ReactElement } from 'react';
 
 import './css/index.css';
+import Goal from './Goal/Goal';
 
-function App() {
+const App: FC = (): ReactElement => {
   const [goal, useGoal] = useState("");
+  const [isGoal, useIsGoal] = useState(false);
+
+  const useToggleIsGoal = () => {
+    useIsGoal(prevValue => !prevValue)
+  }
 
   return (
     <>
       <div className='app'>
-        <div className='settings'>
+        <div className='button settings__button-open'>
           <i className="fas fa-cog"></i>
         </div>
         <div className="pomodoro-timer">
@@ -19,25 +25,34 @@ function App() {
           </div>
           <div className='pomodoro-timer__buttons'>
             {true ?
-              <button className='button pomodoro-timer__button'><i className="fas fa-play"></i></button>
+              <button className='button pomodoro-timer__button'>
+                <i className="fas fa-play"></i>
+              </button>
               :
-              <button className='button pomodoro-timer_button'><i className="fas fa-pause"></i></button>
+              <button className='button pomodoro-timer_button'>
+                <i className="fas fa-pause"></i>
+              </button>
             }
 
             {true ?
-              <button className='button pomodoro-timer_button'><i className="fas fa-sync-alt"></i></button>
+              <button className='button pomodoro-timer_button'>
+                <i className="fas fa-sync-alt"></i>
+              </button>
               :
-              <button className='button button pomodoro-timer_button'><i className="fas fa-forward"></i></button>
+              <button className='button button pomodoro-timer_button'>
+                <i className="fas fa-forward"></i>
+              </button>
             }
           </div>
 
           <div className='pomodoro-timer__goal'>
             <i className="pomodoro-timer__goal-icon fas fa-flag"></i>
-            <button className='pomodoro-timer__goal-button'>
+            <button className='pomodoro-timer__goal-button' onClick={useToggleIsGoal}>
               {goal ? goal : "Your goal"}
             </button>
           </div>
         </div>
+        {isGoal && <Goal useToggleIsGoal={useToggleIsGoal} />}
       </div>
     </>
   );
