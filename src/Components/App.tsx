@@ -5,11 +5,7 @@ import Goal from './Goal/Goal';
 
 const App: FC = (): ReactElement => {
   const [goal, useGoal] = useState("");
-  const [isGoal, useIsGoal] = useState(false);
-
-  const useToggleIsGoal = () => {
-    useIsGoal(prevValue => !prevValue)
-  }
+  const [isVisibleGoal, useIsVisibleGoal] = useState(false);
 
   return (
     <>
@@ -47,12 +43,12 @@ const App: FC = (): ReactElement => {
 
           <div className='pomodoro-timer__goal'>
             <i className="pomodoro-timer__goal-icon fas fa-flag"></i>
-            <button className='pomodoro-timer__goal-button' onClick={useToggleIsGoal}>
+            <button className='pomodoro-timer__goal-button' onClick={() => useIsVisibleGoal(true)}>
               {goal ? goal : "Your goal"}
             </button>
           </div>
         </div>
-        {isGoal && <Goal useToggleIsGoal={useToggleIsGoal} />}
+        {isVisibleGoal && <Goal useIsVisibleGoal={useIsVisibleGoal} useGoal={useGoal} goal={goal} />}
       </div>
     </>
   );
