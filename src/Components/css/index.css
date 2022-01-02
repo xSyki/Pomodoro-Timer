@@ -42,6 +42,8 @@
           justify-content: center;
   border-radius: 10vh;
   background-color: #222222;
+  -webkit-box-shadow: 8px 8px 24px 0px black;
+          box-shadow: 8px 8px 24px 0px black;
 }
 
 .pomodoro-timer__timer {
@@ -132,6 +134,8 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-shadow: 8px 8px 24px 0px black;
+          box-shadow: 8px 8px 24px 0px black;
 }
 
 .goal__input {
@@ -190,6 +194,8 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-shadow: 8px 8px 24px 0px black;
+          box-shadow: 8px 8px 24px 0px black;
 }
 
 .settings__time-stamp {
@@ -214,6 +220,14 @@
   border: transparent;
   border-bottom: 1px solid white;
   margin: 10px;
+}
+
+.settings__input-time {
+  background-color: transparent;
+  border: transparent;
+  border-bottom: 1px solid white;
+  margin: 10px;
+  width: 50px;
 }
 
 .settings__buttons {

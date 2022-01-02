@@ -49,7 +49,6 @@ const App: FC = (): ReactElement => {
 
   const [isVisibleSettings, setIsVisibleSettings] = useState(false);
 
-
   const startTimer = () => {
     setIsStarted(true);
 
@@ -83,6 +82,13 @@ const App: FC = (): ReactElement => {
     }
   }, [actualTimeLeft])
 
+  useEffect(() => {
+    if (actualTimerTime != timeManagement[actualTimeManagementId].duration) {
+      setActualTimerTime(timeManagement[actualTimeManagementId].duration);
+      setActualTimeLeft(timeManagement[actualTimeManagementId].duration);
+    }
+  }, [isVisibleSettings]);
+
   const restartTimer = () => {
     setIsStarted(false);
     setActualTimeLeft(actualTimerTime);
@@ -104,9 +110,9 @@ const App: FC = (): ReactElement => {
   return (
     <>
       <div className='app'>
-        {/* <button className='button settings__button-open' onClick={() => setIsVisibleSettings(true)}>
+        <button className='button settings__button-open' onClick={() => setIsVisibleSettings(true)}>
           <i className="fas fa-cog"></i>
-        </button> */}
+        </button>
         <div className="pomodoro-timer">
           <div className='timer pomodoro-timer__timer'>
             <div className='timer__clock'>
@@ -143,7 +149,7 @@ const App: FC = (): ReactElement => {
           </div>
         </div>
         {isVisibleGoal && <Goal setIsVisibleGoal={setIsVisibleGoal} setGoal={setGoal} goal={goal} />}
-        {/* {isVisibleSettings && <Settings setIsVisibleSeetings={setIsVisibleSettings} setTimeManagement={setTimeManagement} timeManagement={timeManagement} />} */}
+        {isVisibleSettings && <Settings setIsVisibleSeetings={setIsVisibleSettings} setTimeManagement={setTimeManagement} timeManagement={timeManagement} />}
       </div>
     </>
   );
