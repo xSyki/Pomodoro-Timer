@@ -1,4 +1,4 @@
-import React, { useState, FC, ReactElement } from 'react';
+import React, { useState, FC, ReactElement, useEffect } from 'react';
 
 const upgradedPomodoro = [
     {
@@ -60,7 +60,7 @@ const classicPomodoro = [
         type: "work"
     },
     {
-        id: 3,
+        id: 7,
         duration: 900,
         type: "break"
     }
@@ -70,25 +70,39 @@ export interface Props {
     setIsVisibleSeetings: Function;
     setTimeManagement: Function;
     timeManagement: any;
+    templateName: string;
+    setTemplateName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface TimeStamp {
-    id: number,
-    duration: number,
-    type: "work" | "break"
+    timeStamp: {
+        id: number,
+        duration: number,
+        type: string
+    }[]
 }
 
 const Options: FC<Props> = (Props): ReactElement => {
 
-    const [timeManagement, setTimeManagement] = useState(Props.timeManagement);
+    const [timeManagement, setTimeManagement] = useState<TimeStamp["timeStamp"]>(Props.timeManagement);
     const [template, setTemplate] = useState("own");
+
+    useEffect(() => {
+        setTemplate(Props.templateName);
+    }
+        , [])
 
     const handleCancel = () => {
         Props.setIsVisibleSeetings(false);
     }
 
     const handleUpdate = () => {
+        if (timeManagement.some(timeStamp => timeStamp.duration < 1)) {
+            return;
+        }
+
         Props.setTimeManagement(timeManagement);
+        Props.setTemplateName(template);
         Props.setIsVisibleSeetings(false);
     }
 
@@ -153,6 +167,54 @@ const Options: FC<Props> = (Props): ReactElement => {
         }
     }
 
+    const renderTimeStamps = () => {
+        return timeManagement.map((timeStamp) => {
+            return (
+                <div className='settings__time-stamp'>
+                    <h2 className='settings__time-stamp-subtitle'>{timeStamp.id + 1}.</h2>
+                    <label>
+                        Duration:
+                        <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "hours")} onChange={handleDurationInput(timeStamp.id, "hours")} />
+                        :
+                        <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "minutes")} onChange={handleDurationInput(timeStamp.id, "minutes")} />
+                        :
+                        <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "seconds")} onChange={handleDurationInput(timeStamp.id, "seconds")} />
+                    </label>
+                    <label>
+                        Type:
+                        <select className='settings__input' value={timeStamp.type} onChange={handleTypeInput(timeStamp.id)}>
+                            <option className='settings__input' value="work">Work</option>
+                            <option className='settings__input' value="break">Break</option>
+                        </select>
+                    </label>
+                    <button className='settings__delete-button' onClick={() => deleteTimeStamp(timeStamp.id)}><i className="fas fa-minus"></i></button>
+                </div>
+            )
+        })
+    }
+
+    const addNewTimeStamp = () => {
+        setTimeManagement([...timeManagement,
+        {
+            id: timeManagement.length,
+            duration: 0,
+            type: timeManagement[timeManagement.length - 1].type === "work" ? "break" : "work"
+        }])
+    }
+
+    const deleteTimeStamp = (id: number) => {
+        if (timeManagement.length === 1) return;
+        const copyTimeManagement: TimeStamp["timeStamp"] = JSON.parse(JSON.stringify(timeManagement));
+
+        copyTimeManagement.splice(id, 1);
+
+        copyTimeManagement.forEach((timeStamp, index: number) => {
+            timeStamp.id = index;
+        });
+
+        setTimeManagement(copyTimeManagement);
+    }
+
     return (
         <div className='settings__bg'>
             <div className='settings'>
@@ -167,29 +229,8 @@ const Options: FC<Props> = (Props): ReactElement => {
                     </label>
                 </div>
                 <div className='settings__time-management'>
-                    {timeManagement.map((timeStamp: TimeStamp) => {
-                        return (
-                            <div className='settings__time-stamp'>
-                                <h2 className='settings__time-stamp-subtitle'>{timeStamp.id + 1}.</h2>
-                                <label>
-                                    Duration:
-                                    <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "hours")} onChange={handleDurationInput(timeStamp.id, "hours")} />
-                                    :
-                                    <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "minutes")} onChange={handleDurationInput(timeStamp.id, "minutes")} />
-                                    :
-                                    <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "seconds")} onChange={handleDurationInput(timeStamp.id, "seconds")} />
-                                </label>
-                                {/* Typ: <input className='settings__input' type="text" value={timeStamp.type} onChange={handleTimeStampsInput(timeStamp.id, "type")} /> */}
-                                <label>
-                                    Type:
-                                    <select className='settings__input' value={timeStamp.type} onChange={handleTypeInput(timeStamp.id)}>
-                                        <option className='settings__input' value="work">Work</option>
-                                        <option className='settings__input' value="break">Break</option>
-                                    </select>
-                                </label>
-                            </div>
-                        )
-                    })}
+                    {renderTimeStamps()}
+                    {timeManagement.length === 10 ? null : <button className='settings__add-button' onClick={addNewTimeStamp}><i className="fas fa-plus"></i></button>}
                 </div>
                 <div className='settings__buttons'>
                     <button className='settings__button' onClick={handleCancel}>Cancle</button>

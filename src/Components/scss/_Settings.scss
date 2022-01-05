@@ -9,6 +9,25 @@
     flex-direction: column;
     box-shadow: 8px 8px 24px 0px rgb(0, 0, 0);
 
+    &__delete-button {
+        background-color: transparent;
+        border: transparent;
+        font-size: 1rem;
+        padding: 5px;
+        border: 2px solid white;
+        border-radius: 10px;
+    }
+
+    &__add-button {
+        background-color: transparent;
+        border: transparent;
+        font-size: 1.5rem;
+        padding: 5px;
+        width: 100%;
+        border: 2px solid white;
+        border-radius: 10px;
+    }
+
     &__time-stamp {
         display: flex;
         justify-content: space-between;
@@ -32,7 +51,7 @@
         border: transparent;
         border-bottom: 1px solid white;
         margin: 10px;
-        width: 50px;
+        width: 30px;
     }
 
     &__buttons {
@@ -59,6 +78,7 @@
     }
 
     &__button-open {
+        z-index: 1;
         position: fixed;
         right: 0%;
     }

@@ -1,8 +1,11 @@
 import React, { useState, FC, ReactElement, useEffect } from 'react';
+import useSound from 'use-sound';
 
 import './css/index.css';
 import Goal from './Goal';
-import Settings from './Settings'
+import Settings from './Settings';
+
+const bellAlert = require('../sounds/Clear-Long-Bell-01.wav');
 
 export interface TimeStamp {
   id: number,
@@ -48,6 +51,9 @@ const App: FC = (): ReactElement => {
   const [isVisibleGoal, setIsVisibleGoal] = useState(false);
 
   const [isVisibleSettings, setIsVisibleSettings] = useState(false);
+  const [templateName, setTemplateName] = useState("50/10/50/30");
+
+  const [playBellAlert] = useSound(bellAlert);
 
   const startTimer = () => {
     setIsStarted(true);
@@ -75,6 +81,7 @@ const App: FC = (): ReactElement => {
 
   useEffect(() => {
     if (actualTimeLeft <= 0) {
+      playBellAlert();
       const newTimeManagementId = actualTimeManagementId === timeManagement.length - 1 ? 0 : actualTimeManagementId + 1;
       setActualTimerTime(timeManagement[newTimeManagementId].duration);
       setActualTimeLeft(timeManagement[newTimeManagementId].duration);
@@ -148,8 +155,21 @@ const App: FC = (): ReactElement => {
             </button>
           </div>
         </div>
-        {isVisibleGoal && <Goal setIsVisibleGoal={setIsVisibleGoal} setGoal={setGoal} goal={goal} />}
-        {isVisibleSettings && <Settings setIsVisibleSeetings={setIsVisibleSettings} setTimeManagement={setTimeManagement} timeManagement={timeManagement} />}
+        {isVisibleGoal &&
+          <Goal
+            setIsVisibleGoal={setIsVisibleGoal}
+            setGoal={setGoal}
+            goal={goal} />
+        }
+        {isVisibleSettings &&
+          <Settings
+            setIsVisibleSeetings={setIsVisibleSettings}
+            setTimeManagement={setTimeManagement}
+            timeManagement={timeManagement}
+            templateName={templateName}
+            setTemplateName={setTemplateName}
+          />
+        }
       </div>
     </>
   );

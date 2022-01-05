@@ -27,6 +27,7 @@
   aspect-ratio: 9 / 16;
   height: 100vh;
   max-height: 600px;
+  min-height: 500px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -198,6 +199,25 @@
           box-shadow: 8px 8px 24px 0px black;
 }
 
+.settings__delete-button {
+  background-color: transparent;
+  border: transparent;
+  font-size: 1rem;
+  padding: 5px;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
+.settings__add-button {
+  background-color: transparent;
+  border: transparent;
+  font-size: 1.5rem;
+  padding: 5px;
+  width: 100%;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
 .settings__time-stamp {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -227,7 +247,7 @@
   border: transparent;
   border-bottom: 1px solid white;
   margin: 10px;
-  width: 50px;
+  width: 30px;
 }
 
 .settings__buttons {
@@ -263,6 +283,7 @@
 }
 
 .settings__button-open {
+  z-index: 1;
   position: fixed;
   right: 0%;
 }
