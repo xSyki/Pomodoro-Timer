@@ -1,3 +1,5 @@
+import upgradedPomodoro from '../timeManagementTemplates/upgradedPomodoroTemplate';
+
 import React, { useState, FC, ReactElement, useEffect } from 'react';
 import useSound from 'use-sound';
 
@@ -7,40 +9,11 @@ import Settings from './Settings';
 
 const bellAlert = require('../sounds/Clear-Long-Bell-01.wav');
 
-export interface TimeStamp {
-  id: number,
-  duration: number,
-  type: "work" | "break"
-}
-
-const timeManagementDefault = [
-  {
-    id: 0,
-    duration: 3000,
-    type: "work"
-  },
-  {
-    id: 1,
-    duration: 600,
-    type: "break"
-  },
-  {
-    id: 2,
-    duration: 3000,
-    type: "work"
-  },
-  {
-    id: 3,
-    duration: 1800,
-    type: "break"
-  }
-]
-
 const App: FC = (): ReactElement => {
 
   const [isStarted, setIsStarted] = useState(false);
 
-  const [timeManagement, setTimeManagement] = useState(timeManagementDefault);
+  const [timeManagement, setTimeManagement] = useState(upgradedPomodoro);
   const [actualTimeManagementId, setActualTimeManagementId] = useState(0);
 
   const [intervalId, setIntervalId] = useState(setInterval(() => { }, 0));
@@ -114,10 +87,15 @@ const App: FC = (): ReactElement => {
     setActualTimeManagementId(newTimeManagementId);
   }
 
+  const handleSettingsButton = () => {
+    setIsVisibleSettings(true);
+    pauseTimer();
+  }
+
   return (
     <>
       <div className='app'>
-        <button className='button settings__button-open' onClick={() => setIsVisibleSettings(true)}>
+        <button className='button settings__button-open' onClick={handleSettingsButton}>
           <i className="fas fa-cog"></i>
         </button>
         <div className="pomodoro-timer">

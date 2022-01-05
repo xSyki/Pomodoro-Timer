@@ -1,75 +1,13 @@
 import React, { useState, FC, ReactElement, useEffect } from 'react';
 
-const upgradedPomodoro = [
-    {
-        id: 0,
-        duration: 3000,
-        type: "work"
-    },
-    {
-        id: 1,
-        duration: 600,
-        type: "break"
-    },
-    {
-        id: 2,
-        duration: 3000,
-        type: "work"
-    },
-    {
-        id: 3,
-        duration: 1800,
-        type: "break"
-    }
-]
+import classicPomodoro from '../timeManagementTemplates/classicPomodoroTemplate';
 
-const classicPomodoro = [
-    {
-        id: 0,
-        duration: 1500,
-        type: "work"
-    },
-    {
-        id: 1,
-        duration: 300,
-        type: "break"
-    },
-    {
-        id: 2,
-        duration: 1500,
-        type: "work"
-    },
-    {
-        id: 3,
-        duration: 300,
-        type: "break"
-    },
-    {
-        id: 4,
-        duration: 1500,
-        type: "work"
-    },
-    {
-        id: 5,
-        duration: 300,
-        type: "break"
-    },
-    {
-        id: 6,
-        duration: 1500,
-        type: "work"
-    },
-    {
-        id: 7,
-        duration: 900,
-        type: "break"
-    }
-]
+import upgradedPomodoro from '../timeManagementTemplates/upgradedPomodoroTemplate';
 
 export interface Props {
-    setIsVisibleSeetings: Function;
-    setTimeManagement: Function;
-    timeManagement: any;
+    setIsVisibleSeetings: React.Dispatch<React.SetStateAction<boolean>>;
+    setTimeManagement: React.Dispatch<React.SetStateAction<TimeStamp["timeStamp"]>>;
+    timeManagement: TimeStamp["timeStamp"];
     templateName: string;
     setTemplateName: React.Dispatch<React.SetStateAction<string>>;
 }
