@@ -106,10 +106,10 @@ const Options: FC<Props> = (Props): ReactElement => {
     }
 
     const renderTimeStamps = () => {
-        return timeManagement.map((timeStamp) => {
+        return timeManagement.map((timeStamp, index) => {
             return (
                 <div className='settings__time-stamp'>
-                    <h2 className='settings__time-stamp-subtitle'>{timeStamp.id + 1}.</h2>
+                    <h2 className='settings__time-stamp-subtitle'>{index + 1}.</h2>
                     <label>
                         Duration:
                         <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "hours")} onChange={handleDurationInput(timeStamp.id, "hours")} />
@@ -142,15 +142,14 @@ const Options: FC<Props> = (Props): ReactElement => {
 
     const deleteTimeStamp = (id: number) => {
         if (timeManagement.length === 1) return;
-        const copyTimeManagement: TimeStamp["timeStamp"] = JSON.parse(JSON.stringify(timeManagement));
 
-        copyTimeManagement.splice(id, 1);
+        timeManagement.splice(id, 1);
 
-        copyTimeManagement.forEach((timeStamp, index: number) => {
+        timeManagement.forEach((timeStamp, index: number) => {
             timeStamp.id = index;
         });
 
-        setTimeManagement(copyTimeManagement);
+        setTimeManagement([...timeManagement]);
     }
 
     return (
