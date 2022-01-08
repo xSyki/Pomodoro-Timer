@@ -57,6 +57,7 @@ const App: FC = (): ReactElement => {
     if (actualTimeLeft <= 0) {
       playBellAlert();
       const newTimeManagementId = actualTimeManagementId === timeManagement.length - 1 ? 0 : actualTimeManagementId + 1;
+      pauseTimer();
       setActualTimerTime(timeManagement[newTimeManagementId].duration);
       setActualTimeLeft(timeManagement[newTimeManagementId].duration);
       setActualTimeManagementId(newTimeManagementId);
