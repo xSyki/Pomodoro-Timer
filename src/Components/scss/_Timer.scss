@@ -1,15 +1,16 @@
 .timer {
     width: 100%;
+    height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
 
     &__clock {
-        position: absolute;
         display: flex;
         justify-content: center;
         align-items: center;
         width: 80%;
+        max-width: 300px;
         aspect-ratio: 1 / 1;
         border-radius: 50%;
         border: 2px solid white;

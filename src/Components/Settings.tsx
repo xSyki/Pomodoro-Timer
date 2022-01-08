@@ -1,34 +1,25 @@
-import React, { useState, FC, ReactElement, useEffect } from 'react';
+import React, { useState, FC, ReactElement } from 'react';
 
 import classicPomodoro from '../timeManagementTemplates/classicPomodoroTemplate';
 
 import upgradedPomodoro from '../timeManagementTemplates/upgradedPomodoroTemplate';
 
+import { ITimeStamp, TemplateNameType } from '../interface/timeManagementInterfaces';
+
+export type TimeType = 'hours' | 'minutes' | 'seconds';
+
 export interface Props {
     setIsVisibleSeetings: React.Dispatch<React.SetStateAction<boolean>>;
-    setTimeManagement: React.Dispatch<React.SetStateAction<TimeStamp["timeStamp"]>>;
-    timeManagement: TimeStamp["timeStamp"];
-    templateName: string;
-    setTemplateName: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export interface TimeStamp {
-    timeStamp: {
-        id: number,
-        duration: number,
-        type: string
-    }[]
+    setTimeManagement: React.Dispatch<React.SetStateAction<ITimeStamp[]>>;
+    timeManagement: ITimeStamp[];
+    templateName: TemplateNameType;
+    setTemplateName: React.Dispatch<React.SetStateAction<TemplateNameType>>;
 }
 
 const Options: FC<Props> = (Props): ReactElement => {
 
-    const [timeManagement, setTimeManagement] = useState<TimeStamp["timeStamp"]>(Props.timeManagement);
-    const [template, setTemplate] = useState("own");
-
-    useEffect(() => {
-        setTemplate(Props.templateName);
-    }
-        , [])
+    const [timeManagement, setTimeManagement] = useState<ITimeStamp[]>(Props.timeManagement);
+    const [template, setTemplate] = useState(Props.templateName);
 
     const handleCancel = () => {
         Props.setIsVisibleSeetings(false);
@@ -45,16 +36,19 @@ const Options: FC<Props> = (Props): ReactElement => {
     }
 
     const handleTemplateInput = (event: React.FormEvent<HTMLSelectElement>) => {
-        setTemplate(event.currentTarget.value);
 
-        if (event.currentTarget.value === "upgradedPomodoro") {
+        const value = event.currentTarget.value as TemplateNameType;
+
+        setTemplate(value);
+
+        if (value === "upgradedPomodoro") {
             setTimeManagement(upgradedPomodoro);
-        } else if (event.currentTarget.value === "classicPomodoro") {
+        } else if (value === "classicPomodoro") {
             setTimeManagement(classicPomodoro);
         }
     }
 
-    const handleDurationInput = (id: number, type: string) => (event: React.FormEvent<HTMLInputElement>) => {
+    const handleDurationInput = (id: number, type: TimeType) => (event: React.FormEvent<HTMLInputElement>) => {
         setTemplate("own");
         const copyTimeManagement = JSON.parse(JSON.stringify(timeManagement));
 
@@ -90,7 +84,7 @@ const Options: FC<Props> = (Props): ReactElement => {
         setTimeManagement(copyTimeManagement);
     }
 
-    const secConvertion = (duration: number, type: string) => {
+    const secConvertion = (duration: number, type: TimeType) => {
         if (type === "hours") {
             const hours = Math.floor(duration / (60 * 60));
             return hours;
@@ -110,7 +104,7 @@ const Options: FC<Props> = (Props): ReactElement => {
             return (
                 <div className='settings__time-stamp'>
                     <h2 className='settings__time-stamp-subtitle'>{index + 1}.</h2>
-                    <label>
+                    <label className='settings__times'>
                         Duration:
                         <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "hours")} onChange={handleDurationInput(timeStamp.id, "hours")} />
                         :
@@ -118,14 +112,16 @@ const Options: FC<Props> = (Props): ReactElement => {
                         :
                         <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "seconds")} onChange={handleDurationInput(timeStamp.id, "seconds")} />
                     </label>
-                    <label>
-                        Type:
-                        <select className='settings__input' value={timeStamp.type} onChange={handleTypeInput(timeStamp.id)}>
-                            <option className='settings__input' value="work">Work</option>
-                            <option className='settings__input' value="break">Break</option>
-                        </select>
-                    </label>
-                    <button className='settings__delete-button' onClick={() => deleteTimeStamp(timeStamp.id)}><i className="fas fa-minus"></i></button>
+                    <div className='settings__type-delete'>
+                        <label className='settings__time-stamp-type'>
+                            Type:
+                            <select className='settings__input' value={timeStamp.type} onChange={handleTypeInput(timeStamp.id)}>
+                                <option className='settings__input' value="work">Work</option>
+                                <option className='settings__input' value="break">Break</option>
+                            </select>
+                        </label>
+                        <button className='settings__delete-button' onClick={() => deleteTimeStamp(timeStamp.id)}><i className="fas fa-minus"></i></button>
+                    </div>
                 </div>
             )
         })
@@ -159,14 +155,16 @@ const Options: FC<Props> = (Props): ReactElement => {
                     <label>
                         Template:
                         <select className='settings__input' value={template} onChange={handleTemplateInput}>
-                            <option className='settings__input' value="upgradedPomodoro">50/10/50/30</option>
-                            <option className='settings__input' value="classicPomodoro">Classic Pomodoro</option>
-                            <option className='settings__input' value="own">Own</option>
+                            <option className='settings__input' value='upgradedPomodoro'>50/10/50/30</option>
+                            <option className='settings__input' value='classicPomodoro'>Classic Pomodoro</option>
+                            <option className='settings__input' value='own'>Own</option>
                         </select>
                     </label>
                 </div>
                 <div className='settings__time-management'>
-                    {renderTimeStamps()}
+                    <div className='settings__time-stamps'>
+                        {renderTimeStamps()}
+                    </div>
                     {timeManagement.length === 10 ? null : <button className='settings__add-button' onClick={addNewTimeStamp}><i className="fas fa-plus"></i></button>}
                 </div>
                 <div className='settings__buttons'>

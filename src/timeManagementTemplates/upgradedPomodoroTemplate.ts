@@ -1,4 +1,7 @@
-const upgradedPomodoro = [
+import { ITimeStamp } from '../interface/timeManagementInterfaces';
+
+
+const upgradedPomodoro: ITimeStamp[] = [
     {
         id: 0,
         duration: 3000,

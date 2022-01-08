@@ -1,11 +1,12 @@
 import upgradedPomodoro from '../timeManagementTemplates/upgradedPomodoroTemplate';
 
-import React, { useState, FC, ReactElement, useEffect } from 'react';
+import { useState, FC, ReactElement, useEffect } from 'react';
 import useSound from 'use-sound';
 
 import './css/index.css';
 import Goal from './Goal';
 import Settings from './Settings';
+import { TemplateNameType } from '../interface/timeManagementInterfaces';
 
 const bellAlert = require('../sounds/Clear-Long-Bell-01.wav');
 
@@ -24,7 +25,7 @@ const App: FC = (): ReactElement => {
   const [isVisibleGoal, setIsVisibleGoal] = useState(false);
 
   const [isVisibleSettings, setIsVisibleSettings] = useState(false);
-  const [templateName, setTemplateName] = useState("50/10/50/30");
+  const [templateName, setTemplateName] = useState<TemplateNameType>('upgradedPomodoro');
 
   const [playBellAlert] = useSound(bellAlert);
 
@@ -63,7 +64,7 @@ const App: FC = (): ReactElement => {
   }, [actualTimeLeft])
 
   useEffect(() => {
-    if (actualTimerTime != timeManagement[actualTimeManagementId].duration) {
+    if (actualTimerTime !== timeManagement[actualTimeManagementId].duration) {
       setActualTimerTime(timeManagement[actualTimeManagementId].duration);
       setActualTimeLeft(timeManagement[actualTimeManagementId].duration);
     }
@@ -133,6 +134,7 @@ const App: FC = (): ReactElement => {
             </button>
           </div>
         </div>
+
         {isVisibleGoal &&
           <Goal
             setIsVisibleGoal={setIsVisibleGoal}
@@ -148,6 +150,7 @@ const App: FC = (): ReactElement => {
             setTemplateName={setTemplateName}
           />
         }
+
       </div>
     </>
   );
