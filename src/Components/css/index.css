@@ -104,10 +104,6 @@ body {
   cursor: pointer;
 }
 
-.button--active {
-  color: var(--succes-color);
-}
-
 .goal {
   background-color: #222222;
   aspect-ratio: 16 / 9;

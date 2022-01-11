@@ -13,11 +13,11 @@ const Goal: FC<Props> = (Props): ReactElement => {
         setGoal(Props.goal);
     }, [])
 
-    const useHandleGoal = (e: React.FormEvent<HTMLInputElement>) => {
+    const useHandleGoalInput = (e: React.FormEvent<HTMLInputElement>) => {
         setGoal(e.currentTarget.value);
     }
 
-    const useHandleUpdate = () => {
+    const handleUpdate = () => {
         Props.setGoal(goal);
         Props.setIsVisibleGoal(false);
     }
@@ -25,10 +25,10 @@ const Goal: FC<Props> = (Props): ReactElement => {
     return (
         <div className='goal__bg'>
             <div className='goal'>
-                <input className='goal__input' type="text" value={goal} onChange={useHandleGoal} />
+                <input className='goal__input' type="text" value={goal} onChange={useHandleGoalInput} />
                 <div className='goal__buttons'>
                     <button className='goal__button' onClick={() => Props.setIsVisibleGoal(false)}>Cancel</button>
-                    <button className='goal__button' onClick={useHandleUpdate}>Update</button>
+                    <button className='goal__button' onClick={handleUpdate}>Update</button>
                 </div>
             </div>
         </div>

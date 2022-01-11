@@ -16,27 +16,12 @@ export interface Props {
     setTemplateName: React.Dispatch<React.SetStateAction<TemplateNameType>>;
 }
 
-const Options: FC<Props> = (Props): ReactElement => {
+const Settings: FC<Props> = (Props): ReactElement => {
 
     const [timeManagement, setTimeManagement] = useState<ITimeStamp[]>(Props.timeManagement);
     const [template, setTemplate] = useState(Props.templateName);
 
-    const handleCancel = () => {
-        Props.setIsVisibleSeetings(false);
-    }
-
-    const handleUpdate = () => {
-        if (timeManagement.some(timeStamp => timeStamp.duration < 1)) {
-            return;
-        }
-
-        Props.setTimeManagement(timeManagement);
-        Props.setTemplateName(template);
-        Props.setIsVisibleSeetings(false);
-    }
-
     const handleTemplateInput = (event: React.FormEvent<HTMLSelectElement>) => {
-
         const value = event.currentTarget.value as TemplateNameType;
 
         setTemplate(value);
@@ -46,6 +31,34 @@ const Options: FC<Props> = (Props): ReactElement => {
         } else if (value === "classicPomodoro") {
             setTimeManagement(classicPomodoro);
         }
+    }
+
+    const renderTimeStamps = () => {
+        return timeManagement.map((timeStamp, index) => {
+            return (
+                <div className='settings__time-stamp'>
+                    <h2 className='settings__time-stamp-subtitle'>{index + 1}.</h2>
+                    <label className='settings__times'>
+                        Duration:
+                        <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "hours")} onChange={handleDurationInput(timeStamp.id, "hours")} />
+                        :
+                        <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "minutes")} onChange={handleDurationInput(timeStamp.id, "minutes")} />
+                        :
+                        <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "seconds")} onChange={handleDurationInput(timeStamp.id, "seconds")} />
+                    </label>
+                    <div className='settings__type-delete'>
+                        <label className='settings__time-stamp-type'>
+                            Type:
+                            <select className='settings__input' value={timeStamp.type} onChange={handleTypeInput(timeStamp.id)}>
+                                <option className='settings__input' value="work">Work</option>
+                                <option className='settings__input' value="break">Break</option>
+                            </select>
+                        </label>
+                        <button className='settings__delete-button' onClick={() => deleteTimeStamp(timeStamp.id)}><i className="fas fa-minus"></i></button>
+                    </div>
+                </div>
+            )
+        })
     }
 
     const handleDurationInput = (id: number, type: TimeType) => (event: React.FormEvent<HTMLInputElement>) => {
@@ -99,34 +112,6 @@ const Options: FC<Props> = (Props): ReactElement => {
         }
     }
 
-    const renderTimeStamps = () => {
-        return timeManagement.map((timeStamp, index) => {
-            return (
-                <div className='settings__time-stamp'>
-                    <h2 className='settings__time-stamp-subtitle'>{index + 1}.</h2>
-                    <label className='settings__times'>
-                        Duration:
-                        <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "hours")} onChange={handleDurationInput(timeStamp.id, "hours")} />
-                        :
-                        <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "minutes")} onChange={handleDurationInput(timeStamp.id, "minutes")} />
-                        :
-                        <input className='settings__input-time' type="number" value={secConvertion(timeStamp.duration, "seconds")} onChange={handleDurationInput(timeStamp.id, "seconds")} />
-                    </label>
-                    <div className='settings__type-delete'>
-                        <label className='settings__time-stamp-type'>
-                            Type:
-                            <select className='settings__input' value={timeStamp.type} onChange={handleTypeInput(timeStamp.id)}>
-                                <option className='settings__input' value="work">Work</option>
-                                <option className='settings__input' value="break">Break</option>
-                            </select>
-                        </label>
-                        <button className='settings__delete-button' onClick={() => deleteTimeStamp(timeStamp.id)}><i className="fas fa-minus"></i></button>
-                    </div>
-                </div>
-            )
-        })
-    }
-
     const addNewTimeStamp = () => {
         setTimeManagement([...timeManagement,
         {
@@ -146,6 +131,20 @@ const Options: FC<Props> = (Props): ReactElement => {
         });
 
         setTimeManagement([...timeManagement]);
+    }
+
+    const handleCancel = () => {
+        Props.setIsVisibleSeetings(false);
+    }
+
+    const handleUpdate = () => {
+        if (timeManagement.some(timeStamp => timeStamp.duration < 1)) {
+            return;
+        }
+
+        Props.setTimeManagement(timeManagement);
+        Props.setTemplateName(template);
+        Props.setIsVisibleSeetings(false);
     }
 
     return (
@@ -176,4 +175,4 @@ const Options: FC<Props> = (Props): ReactElement => {
     );
 }
 
-export default Options;
+export default Settings;

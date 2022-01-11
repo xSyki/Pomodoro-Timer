@@ -17,7 +17,7 @@ const App: FC = (): ReactElement => {
   const [timeManagement, setTimeManagement] = useState(upgradedPomodoro);
   const [actualTimeManagementId, setActualTimeManagementId] = useState(0);
 
-  const [intervalId, setIntervalId] = useState(setInterval(() => { }, 0));
+  const [intervalId, setIntervalId] = useState<NodeJS.Timer>(setInterval(() => { }, 0));
   const [actualTimerTime, setActualTimerTime] = useState(timeManagement[0].duration);
   const [actualTimeLeft, setActualTimeLeft] = useState(actualTimerTime);
 
@@ -28,15 +28,6 @@ const App: FC = (): ReactElement => {
   const [templateName, setTemplateName] = useState<TemplateNameType>('upgradedPomodoro');
 
   const [playBellAlert] = useSound(bellAlert);
-
-  const startTimer = () => {
-    setIsStarted(true);
-
-    const timerInterval = setInterval(() => {
-      setActualTimeLeft(prevValue => prevValue - 1)
-    }, 1000)
-    setIntervalId(timerInterval);
-  }
 
   function secondsToTime(secs: number) {
     const hours = Math.floor(secs / (60 * 60));
@@ -71,14 +62,24 @@ const App: FC = (): ReactElement => {
     }
   }, [isVisibleSettings]);
 
-  const restartTimer = () => {
-    setIsStarted(false);
-    setActualTimeLeft(actualTimerTime);
-    clearInterval(intervalId);
+  const startTimer = () => {
+    setIsStarted(true);
+
+    const timerInterval = setInterval(() => {
+      setActualTimeLeft(prevValue => prevValue - 1)
+    }, 1000)
+
+    setIntervalId(timerInterval);
   }
 
   const pauseTimer = () => {
     setIsStarted(false);
+    clearInterval(intervalId);
+  }
+
+  const restartTimer = () => {
+    setIsStarted(false);
+    setActualTimeLeft(actualTimerTime);
     clearInterval(intervalId);
   }
 
@@ -90,7 +91,7 @@ const App: FC = (): ReactElement => {
   }
 
   const handleSettingsButton = () => {
-    setIsVisibleSettings(true);
+    setIsVisibleSettings(!isVisibleSettings);
     pauseTimer();
   }
 

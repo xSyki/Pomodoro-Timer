@@ -1,6 +1,5 @@
 import { ITimeStamp } from '../interface/timeManagementInterfaces';
 
-
 const upgradedPomodoro: ITimeStamp[] = [
     {
         id: 0,
