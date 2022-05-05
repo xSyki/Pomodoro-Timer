@@ -1,22 +1,38 @@
 .timer {
+    position: relative;
     width: 100%;
     height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
 
+    &__dot {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform-origin: 50% calc(50% + 140px);
+        transform: translate(-50%, calc(-50% - 140px)) rotate(0turn);
+
+        height: 10px;
+        width: 10px;
+        border-radius: 5px;
+        background-color: var(--bg-color);
+    }
+
     &__clock {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 80%;
-        max-width: 300px;
+        // width: 80%;
+        // max-width: 300px;
+        width: 280px;
         aspect-ratio: 1 / 1;
         border-radius: 50%;
         border: 2px solid white;
     }
 
     &__time {
+        position: absolute;
         font-size: 5rem;
     }
 }

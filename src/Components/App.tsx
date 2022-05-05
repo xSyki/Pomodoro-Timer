@@ -8,6 +8,8 @@ import Goal from './Goal';
 import Settings from './Settings';
 import { TemplateNameType } from '../interface/timeManagementInterfaces';
 
+import CSS from 'csstype';
+
 const bellAlert = require('../sounds/Clear-Long-Bell-01.wav');
 
 const App: FC = (): ReactElement => {
@@ -17,7 +19,7 @@ const App: FC = (): ReactElement => {
   const [timeManagement, setTimeManagement] = useState(upgradedPomodoro);
   const [actualTimeManagementId, setActualTimeManagementId] = useState(0);
 
-  const [intervalId, setIntervalId] = useState<NodeJS.Timer>(setInterval(() => { }, 0));
+  const [intervalId, setIntervalId] = useState(setInterval(() => { }, 0));
   const [actualTimerTime, setActualTimerTime] = useState(timeManagement[0].duration);
   const [actualTimeLeft, setActualTimeLeft] = useState(actualTimerTime);
 
@@ -95,6 +97,10 @@ const App: FC = (): ReactElement => {
     pauseTimer();
   }
 
+  const dotStyle: CSS.Properties = {
+    transform: `translate(-50%, calc(-50% - 140px)) rotate(-${actualTimeLeft / actualTimerTime}turn)`,
+  };
+
   return (
     <>
       <div className='app'>
@@ -104,6 +110,7 @@ const App: FC = (): ReactElement => {
         <div className="pomodoro-timer">
           <div className='timer pomodoro-timer__timer'>
             <div className='timer__clock'>
+              <div className='timer__dot' style={dotStyle}></div>
               <p className='timer__time'>{secondsToTime(actualTimeLeft)}</p>
             </div>
           </div>
